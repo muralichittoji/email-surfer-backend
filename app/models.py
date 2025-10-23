@@ -1,16 +1,22 @@
 from .db import get_db_connection
 
 CREATE_MAILS_TABLE = """
-CREATE TABLE IF NOT EXISTS mails (
-    id SERIAL PRIMARY KEY,
-    account_no BIGINT NOT NULL,
-    sender VARCHAR(255) NOT NULL,
-    receiver VARCHAR(255) NOT NULL,
-    subject TEXT NOT NULL,
-    body TEXT NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    priority INT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS email_cases (
+  id SERIAL PRIMARY KEY,
+  case_id VARCHAR(128) UNIQUE NOT NULL,
+  from_addr VARCHAR(320) NOT NULL,
+  to_addr VARCHAR(320) NOT NULL,
+  subject TEXT NOT NULL,
+  body_lang VARCHAR(8),
+  router VARCHAR(64) NOT NULL,
+  top_label VARCHAR(64),
+  top_score DOUBLE PRECISION,
+  top_categories JSONB,
+  entities JSONB,
+  status case_status DEFAULT 'received' NOT NULL,
+  pdf_sha256 VARCHAR(64),
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
 """
 
